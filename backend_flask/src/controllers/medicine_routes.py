@@ -28,14 +28,8 @@ def get_medicine(medicine_id):
 
 @medicine_bp.route('/<medicine_id>', methods=['PUT'])
 def update_medicine(medicine_id):
-    """PUT /api/medicines/{id} - Full update"""
+    """PUT /api/medicines/{id} - Update medicine"""
     return MedicineController.update(medicine_id)
-
-
-@medicine_bp.route('/<medicine_id>', methods=['PATCH'])
-def partial_update_medicine(medicine_id):
-    """PATCH /api/medicines/{id} - Partial update"""
-    return MedicineController.partial_update(medicine_id)
 
 
 @medicine_bp.route('/<medicine_id>', methods=['DELETE'])

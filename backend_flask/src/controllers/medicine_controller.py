@@ -44,28 +44,12 @@ class MedicineController:
 
     @staticmethod
     def update(medicine_id):
-        """Full update of a medicine (PUT)"""
+        """Update a medicine (PUT)"""
         medicine = Medicine.query.get_or_404(medicine_id)
         data = request.get_json()
         
-        # Validation
-        if not data or 'name' not in data:
-            return jsonify({'error': 'Name is required'}), 400
-        
-        # Update all fields
-        medicine.update({
-            'name': data['name'],
-            'description': data.get('description', '')
-        })
-        
-        db.session.commit()
-        return jsonify(medicine.to_dict()), 200
-
-    @staticmethod
-    def partial_update(medicine_id):
-        """Partial update of a medicine (PATCH)"""
-        medicine = Medicine.query.get_or_404(medicine_id)
-        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
         
         # Update only provided fields
         medicine.update(data)
