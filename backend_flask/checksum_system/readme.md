@@ -1,5 +1,3 @@
-Sure! Here’s your entire document converted into clean, formatted Markdown code — ready for use in a README.md file or documentation page:
-
 # 🧮 Checksum-based ID Generator
 
 **Tiny, dependency-free utilities for creating and validating 11-digit identifiers with an embedded mod-7 checksum.**  
@@ -90,9 +88,8 @@ b = ChecksumIdGenerator.build_segment_b(prescribed=True)    # '1xxxxxC' (7 digit
 
 Note: C above denotes a checksum digit 0–6, not a literal “C”.
 
-⸻
-
-▶️ Running the demo/test script
+```
+## ▶️ Running the demo/test script
 
 A simple manual test script is provided:
 
@@ -109,7 +106,7 @@ What it shows
 
 The script seeds the RNG for reproducible output.
 
-⸻
+---
 
 📏 Validation rules (verify_id() checks)
 	1.	Input is non-empty; digits and whitespace only are allowed.
@@ -123,7 +120,7 @@ The script seeds the RNG for reproducible output.
 
 ✅ Returns True only if all conditions are satisfied.
 
-⸻
+---
 
 🧪 Reproducible example (pseudo-output)
 
@@ -136,7 +133,7 @@ Typo version: 1011xxxxxD -> verify_id=False
 
 (Where x are random digits and C/D are checksum digits in 0..6.)
 
-⸻
+---
 
 ⚠️ Notes & gotchas
 	•	The weighting starts at the leftmost digit (index 0).
@@ -145,7 +142,7 @@ If you adapt this for other systems, note some weight from the right.
 If you require ASCII-only input, normalize or tighten the checks.
 	•	The random payload may contain zeros (by design). This is fine for uniqueness and entropy.
 
-⸻
+---
 
 🙋 FAQ
 
@@ -159,4 +156,4 @@ Q: How do I add a new company?
 A: Extend COMPANY_CODES with a lower-cased name and a three-digit string code
 (e.g., "newco": "105").
 
-⸻
+---
