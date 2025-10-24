@@ -20,14 +20,16 @@ Each identifier is composed of two independently protected segments:
 ---
 
 ## 🧱 ID layout
+```
+AAAAAAAAAAA  (11 digits total)
+││││││││││└─ Segment B checksum (mod 7)
+│││││││││└── 5 random digits (0-9)
+││││││││└─── Type digit: 1=prescribed, 2=OTC
+││││└──────── Segment A checksum (mod 7)
+│││└───────── 3-digit company code (ASCII digits only)
+└──────────── Segment A (4) + Segment B (7)
+```
 
-<br/>AAAAAAAAAAA  (11 digits total)<br/>
-<br/>││││││││││└─ Segment B checksum (mod 7)<br/>
-<br/>│││││││││└── 5 random digits (0-9)<br/>
-<br/>││││││││└─── Type digit: 1=prescribed, 2=OTC<br/>
-<br/>││││└──────── Segment A checksum (mod 7)<br/>
-<br/>│││└───────── 3-digit company code (ASCII digits only)<br/>
-<br/>└──────────── Segment A (4) + Segment B (7)<br/>
 
 You may optionally insert a separator (e.g., a space) between segments when formatting for display.  
 Validation accepts digits with optional whitespace (including tabs/newlines), but the digits-only length must be **11**.
