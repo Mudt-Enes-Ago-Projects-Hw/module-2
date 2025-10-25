@@ -4,6 +4,7 @@ Medicine Controller - Handles all medicine-related business logic
 from flask import request, jsonify
 from src.models.medicine import Medicine
 from src.config.database import db
+from algorithms.verifyID import verify_id
 
 
 class MedicineController:
@@ -24,10 +25,17 @@ class MedicineController:
         if not data or 'name' not in data:
             return jsonify({'error': 'Name is required'}), 400
         
+        if 'company' not in data:
+            return jsonify({'error': 'Company is required'}), 400
+        
         # Create medicine
         medicine = Medicine(
             name=data['name'],
-            description=data.get('description', '')
+            description=data.get('description', ''),
+            price=data.get('price', 0.0),
+            stock=data.get('stock', 0),
+            prescribed=data.get('prescribed', False),
+            company=data['company']
         )
         
         # Save to database
@@ -39,6 +47,11 @@ class MedicineController:
     @staticmethod
     def get_by_id(medicine_id):
         """Get a single medicine by ID"""
+
+        # Validate the ID format and checksum
+        if not verify_id(medicine_id):
+            return jsonify({'error': 'Invalid or mistyped ID'}), 400
+        
         medicine = Medicine.query.get_or_404(medicine_id)
         return jsonify(medicine.to_dict()), 200
 
@@ -47,6 +60,10 @@ class MedicineController:
         """Update a medicine (PUT)"""
         medicine = Medicine.query.get_or_404(medicine_id)
         data = request.get_json()
+
+        # Validate the ID format and checksum
+        if not verify_id(medicine_id):
+            return jsonify({'error': 'Invalid or mistyped ID'}), 400
         
         if not data:
             return jsonify({'error': 'No data provided'}), 400
@@ -60,6 +77,11 @@ class MedicineController:
     @staticmethod
     def delete(medicine_id):
         """Delete a medicine"""
+
+        # Validate the ID format and checksum
+        if not verify_id(medicine_id):
+            return jsonify({'error': 'Invalid or mistyped ID'}), 400
+
         medicine = Medicine.query.get_or_404(medicine_id)
         
         db.session.delete(medicine)
