@@ -56,7 +56,7 @@ FLASK_ENV=development```bash
 
 ### 3. Run the Server
 
-Server will start at: **http://localhost:5000**
+Server will start at: **http://localhost:3001**
 
 ```bash
 
@@ -64,7 +64,7 @@ Server will start at: **http://localhost:5000**
 
 ```
 
-**Base URL:** `http://localhost:5000/api/medicines`
+**Base URL:** `http://localhost:3001/api/medicines`
 
 The API will be available at: **http://localhost:3001/api/medicines**
 
@@ -96,7 +96,7 @@ The API will be available at: **http://localhost:3001/api/medicines**
 
 ```bash
 
-### Create a Medicinecurl -X POST http://localhost:5000/api/medicines \
+### Create a Medicinecurl -X POST http://localhost:3001/api/medicines \
 
   -H "Content-Type: application/json" \
 
@@ -132,7 +132,7 @@ curl http://localhost:3001/api/medicines  "created_at": "2025-10-24T00:00:00Z",
 
 curl -X PUT http://localhost:3001/api/medicines/{id} \```bash
 
-  -H "Content-Type: application/json" \curl http://localhost:5000/api/medicines
+  -H "Content-Type: application/json" \curl http://localhost:3001/api/medicines
 
   -d '{"name": "Aspirin 500mg", "description": "Updated description"}'```
 
@@ -142,7 +142,7 @@ curl -X PUT http://localhost:3001/api/medicines/{id} \```bash
 
 ### Delete a Medicine```bash
 
-curl http://localhost:5000/api/medicines/482719384756291
+curl http://localhost:3001/api/medicines/482719384756291
 
 ```bash```
 
@@ -152,7 +152,7 @@ curl -X DELETE http://localhost:3001/api/medicines/{id}
 
 ```bash
 
-### Search Medicinescurl -X PUT http://localhost:5000/api/medicines/482719384756291 \
+### Search Medicinescurl -X PUT http://localhost:3001/api/medicines/482719384756291 \
 
   -H "Content-Type: application/json" \
 
@@ -166,7 +166,7 @@ curl http://localhost:3001/api/medicines/search?q=Aspirin```
 
 ## 🗂️ Project Structure```bash
 
-curl -X PATCH http://localhost:5000/api/medicines/482719384756291 \
+curl -X PATCH http://localhost:3001/api/medicines/482719384756291 \
 
 ```  -H "Content-Type: application/json" \
 
@@ -180,7 +180,7 @@ backend_flask/  -d '{"name": "Aspirin 500mg"}'
 
 ├── .env.example               # Example environment variables```bash
 
-├── algorithms/curl -X DELETE http://localhost:5000/api/medicines/482719384756291
+├── algorithms/curl -X DELETE http://localhost:3001/api/medicines/482719384756291
 
 │   └── generateID.py          # 15-digit ID generator```
 
@@ -190,7 +190,7 @@ backend_flask/  -d '{"name": "Aspirin 500mg"}'
 
     │   ├── settings.py        # App configuration```bash
 
-    │   └── database.py        # Database setupcurl "http://localhost:5000/api/medicines/search?q=aspirin"
+    │   └── database.py        # Database setupcurl "http://localhost:3001/api/medicines/search?q=aspirin"
 
     ├── models/```
 
