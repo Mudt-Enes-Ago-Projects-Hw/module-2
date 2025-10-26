@@ -1,282 +1,285 @@
-# Pharmacy API Backend# Flask Pharmacy API 💊
+# Flask Pharmacy API 💊
 
+A clean Flask REST API for managing medicines and pharmaceutical companies with custom ID generation.
 
+## ✨ Features
 
-A simple Flask REST API for managing pharmacy medicines with CRUD operations.A simple, clean Flask REST API for managing medicines with custom 15-digit ID generation.
+- ✅ **CRUD Operations** - Complete medicine and company management
+- ✅ **Custom IDs** - 11-digit unique identifiers with checksum validation
+- ✅ **Company System** - Dynamic company management with 3-digit codes
+- ✅ **Search** - Search medicines by name or description
+- ✅ **SQLite Database** - Lightweight, auto-created on first run
+- ✅ **CORS Enabled** - Ready for frontend integration
+- ✅ **Pure JSON API** - RESTful design
 
+## 🚀 Quick Start
 
+### 1. Create Virtual Environment
 
-## 🚀 Quick Start## ✨ Features
+```bash
+cd backend_flask
+python3 -m venv venv
+source venv/bin/activate  # On macOS/Linux
+# or
+venv\Scripts\activate     # On Windows
+```
 
+### 2. Install Dependencies
 
-
-### 1. Install Dependencies- ✅ **CRUD Operations** - Create, Read, Update, Delete medicines
-
-- ✅ **Custom IDs** - Random 15-digit unique identifiers
-
-```bash- ✅ **Search** - Search medicines by name or description
-
-cd backend_flask- ✅ **SQLite Database** - Lightweight, no setup required
-
-pip install -r requirements.txt- ✅ **CORS Enabled** - Ready for frontend integration
-
-```- ✅ **Pure JSON API** - No HTML, just data
-
-
-
-### 2. Configure Environment## 🚀 Quick Start
-
-
-
-Copy `.env.example` to `.env`:### 1. Install Dependencies
-
-
-
-```bash```bash
-
-cp .env.example .envcd backend_flask
-
-```source venv/bin/activate  # Already created!
-
-pip install -r requirements.txt  # Already installed!
-
-Edit `.env` to change settings (optional):```
-
-
-
-```bash### 2. Run the Server
-
-PORT=3001
-
-FLASK_ENV=development```bash
-
-```python app.py
-
+```bash
+pip install -r requirements.txt
 ```
 
 ### 3. Run the Server
 
+```bash
+python app.py
+```
+
 Server will start at: **http://localhost:3001**
 
-```bash
+On first run, the database will be created and seeded with initial companies:
+- Acme Pharma (101)
+- HealthPlus Labs (102)
+- Pharmatech (103)
+- Medicore (104)
 
-./venv/bin/python3 app.py## 📡 API Endpoints
+## 📡 API Endpoints
 
-```
+### Medicine Endpoints
 
 **Base URL:** `http://localhost:3001/api/medicines`
 
-The API will be available at: **http://localhost:3001/api/medicines**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/medicines` | Get all medicines |
+| `POST` | `/api/medicines` | Create a new medicine |
+| `GET` | `/api/medicines/{id}` | Get a single medicine |
+| `PUT` | `/api/medicines/{id}` | Update a medicine |
+| `DELETE` | `/api/medicines/{id}` | Delete a medicine |
+| `GET` | `/api/medicines/search?q=term` | Search medicines |
+
+### Company Endpoints
+
+**Base URL:** `http://localhost:3001/api/companies`
 
 | Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/companies` | Get all companies |
+| `POST` | `/api/companies` | Create a new company |
+| `GET` | `/api/companies/{id}` | Get a single company |
+| `PUT` | `/api/companies/{id}` | Update a company |
+| `DELETE` | `/api/companies/{id}` | Delete a company |
 
-## 📡 API Endpoints|--------|----------|-------------|
+## 🧪 API Examples
 
-| `GET` | `/api/medicines` | Get all medicines |
+### Company Operations
 
-| Method | Endpoint | Description || `POST` | `/api/medicines` | Create a new medicine |
-
-|--------|----------|-------------|| `GET` | `/api/medicines/{id}` | Get a single medicine |
-
-| GET | `/api/medicines` | Get all medicines || `PUT` | `/api/medicines/{id}` | Full update (requires all fields) |
-
-| POST | `/api/medicines` | Create a new medicine || `PATCH` | `/api/medicines/{id}` | Partial update |
-
-| GET | `/api/medicines/{id}` | Get a specific medicine || `DELETE` | `/api/medicines/{id}` | Delete a medicine |
-
-| PUT | `/api/medicines/{id}` | Update a medicine || `GET` | `/api/medicines/search?q=term` | Search medicines |
-
-| DELETE | `/api/medicines/{id}` | Delete a medicine |
-
-| GET | `/api/medicines/search?q=term` | Search medicines |## 🧪 Test the API
-
-
-
-## 📝 Example Usage### Create a Medicine
-
+#### Get All Companies
 ```bash
+curl http://localhost:3001/api/companies
+```
 
-### Create a Medicinecurl -X POST http://localhost:3001/api/medicines \
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "name": "Acme Pharma",
+    "code": "101",
+    "description": "Leading pharmaceutical company",
+    "created_at": "2025-10-26T12:00:00Z",
+    "updated_at": "2025-10-26T12:00:00Z"
+  }
+]
+```
 
+#### Create a New Company
+```bash
+curl -X POST http://localhost:3001/api/companies \
   -H "Content-Type: application/json" \
+  -d '{
+    "name": "BioMed Corp",
+    "code": "105",
+    "description": "Biomedical research and development"
+  }'
+```
 
-```bash  -d '{"name": "Aspirin", "description": "Pain reliever"}'
+#### Get Company by ID
+```bash
+curl http://localhost:3001/api/companies/1
+```
 
-curl -X POST http://localhost:3001/api/medicines \```
-
+#### Update a Company
+```bash
+curl -X PUT http://localhost:3001/api/companies/1 \
   -H "Content-Type: application/json" \
+  -d '{
+    "name": "Acme Pharma Updated",
+    "description": "Updated description"
+  }'
+```
 
-  -d '{"name": "Aspirin", "description": "Pain reliever"}'**Response:**
+#### Delete a Company
+```bash
+curl -X DELETE http://localhost:3001/api/companies/5
+```
 
-``````json
+### Medicine Operations
 
+#### Create a Medicine
+```bash
+curl -X POST http://localhost:3001/api/medicines \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Aspirin Plus",
+    "description": "Pain relief medication",
+    "price": 12.99,
+    "stock": 100,
+    "prescribed": false,
+    "company_id": 1
+  }'
+```
+
+**Response:**
+```json
 {
-
-### Get All Medicines  "id": "482719384756291",
-
-  "name": "Aspirin",
-
-```bash  "description": "Pain reliever",
-
-curl http://localhost:3001/api/medicines  "created_at": "2025-10-24T00:00:00Z",
-
-```  "updated_at": "2025-10-24T00:00:00Z"
-
+  "id": "10151905730",
+  "name": "Aspirin Plus",
+  "description": "Pain relief medication",
+  "price": 12.99,
+  "stock": 100,
+  "prescribed": false,
+  "company_id": 1,
+  "company": {
+    "id": 1,
+    "name": "Acme Pharma",
+    "code": "101",
+    "description": "Leading pharmaceutical company"
+  },
+  "created_at": "2025-10-26T12:00:00Z",
+  "updated_at": "2025-10-26T12:00:00Z"
 }
-
-### Update a Medicine```
-
-
-
-```bash### Get All Medicines
-
-curl -X PUT http://localhost:3001/api/medicines/{id} \```bash
-
-  -H "Content-Type: application/json" \curl http://localhost:3001/api/medicines
-
-  -d '{"name": "Aspirin 500mg", "description": "Updated description"}'```
-
 ```
 
-### Get Single Medicine
-
-### Delete a Medicine```bash
-
-curl http://localhost:3001/api/medicines/482719384756291
-
-```bash```
-
-curl -X DELETE http://localhost:3001/api/medicines/{id}
-
-```### Update Medicine (Full)
-
+#### Get All Medicines
 ```bash
+curl http://localhost:3001/api/medicines
+```
 
-### Search Medicinescurl -X PUT http://localhost:3001/api/medicines/482719384756291 \
+#### Get Single Medicine by ID
+```bash
+curl http://localhost:3001/api/medicines/10151905730
+```
 
+#### Update Medicine
+```bash
+curl -X PUT http://localhost:3001/api/medicines/10151905730 \
   -H "Content-Type: application/json" \
-
-```bash  -d '{"name": "Aspirin 500mg", "description": "Updated description"}'
-
-curl http://localhost:3001/api/medicines/search?q=Aspirin```
-
+  -d '{
+    "name": "Aspirin Plus 500mg",
+    "description": "Enhanced pain relief",
+    "price": 15.99,
+    "stock": 150,
+    "company_id": 1
+  }'
 ```
 
-### Update Medicine (Partial)
+#### Delete Medicine
+```bash
+curl -X DELETE http://localhost:3001/api/medicines/10151905730
+```
 
-## 🗂️ Project Structure```bash
+#### Search Medicines
+```bash
+curl "http://localhost:3001/api/medicines/search?q=aspirin"
+```
 
-curl -X PATCH http://localhost:3001/api/medicines/482719384756291 \
+## 📁 Project Structure
 
-```  -H "Content-Type: application/json" \
-
-backend_flask/  -d '{"name": "Aspirin 500mg"}'
-
-├── app.py                      # Main application entry point```
-
-├── requirements.txt            # Python dependencies
-
-├── .env                        # Environment variables (not in git)### Delete Medicine
-
-├── .env.example               # Example environment variables```bash
-
-├── algorithms/curl -X DELETE http://localhost:3001/api/medicines/482719384756291
-
-│   └── generateID.py          # 15-digit ID generator```
-
-└── src/
-
-    ├── config/### Search Medicines
-
-    │   ├── settings.py        # App configuration```bash
-
-    │   └── database.py        # Database setupcurl "http://localhost:3001/api/medicines/search?q=aspirin"
-
-    ├── models/```
-
-    │   └── medicine.py        # Medicine model
-
-    └── controllers/## 📁 Project Structure
-
-        ├── medicine_controller.py  # Business logic
-
-        └── medicine_routes.py      # API routes```
-
-```backend_flask/
-
-├── app.py                  # Main Flask application (ALL THE CODE!)
-
-## 🔧 Technologies├── algorithms/
-
+```
+backend_flask/
+├── app.py                          # Main application entry point
+├── requirements.txt                # Python dependencies
+├── test_company_system.py         # Test script for company system
+├── algorithms/
 │   ├── __init__.py
-
-- **Flask 3.1.2** - Web framework│   └── generateID.py      # 15-digit ID generator
-
-- **Flask-SQLAlchemy 3.1.1** - ORM for database├── pharmacy.db            # SQLite database (auto-created)
-
-- **Flask-CORS 6.0.1** - Cross-origin resource sharing├── requirements.txt       # Python dependencies
-
-- **python-dotenv 1.0.0** - Environment variable management├── venv/                  # Virtual environment
-
-- **SQLite** - Database└── README.md             # This file
-
+│   ├── generateID.py              # 11-digit ID generator with checksum
+│   ├── verifyID.py                # ID verification
+│   └── testID.py                  # Algorithm tests
+├── instance/
+│   └── pharmacy.db                # SQLite database (auto-created)
+└── src/
+    ├── config/
+    │   ├── settings.py            # App configuration
+    │   └── database.py            # Database setup
+    ├── models/
+    │   ├── medicine.py            # Medicine model
+    │   └── company.py             # Company model
+    └── controllers/
+        ├── medicine_controller.py  # Medicine business logic
+        ├── medicine_routes.py      # Medicine API routes
+        ├── company_controller.py   # Company business logic
+        └── company_routes.py       # Company API routes
 ```
 
-## 📦 Features
+## 📊 Database Schema
 
-## 🎯 Why Flask?
-
-- ✅ Clean MVC architecture
-
-- ✅ Custom 15-digit ID generation**Compared to Django:**
-
-- ✅ RESTful API design- ✅ **1 file** vs 15+ files
-
-- ✅ CORS enabled for frontend integration- ✅ **~170 lines** vs 200+ lines
-
-- ✅ Environment-based configuration- ✅ **No migrations** - database auto-created
-
-- ✅ Search functionality- ✅ **Easier to read** - everything in one place
-
-- ✅ **Faster setup** - ready in minutes
-
-## 🔧 How It Works
-
-1. **Run `python app.py`**
-2. Flask automatically creates `pharmacy.db` with the `medicine` table
-3. API is ready to use immediately!
-
-No migrations, no complex setup - just run and go! 🚀
-
-## 📊 Database
-
-**Table:** `medicine`
-
+### Company Table
 | Column | Type | Description |
 |--------|------|-------------|
-| `id` | String(15) | Primary key, 15-digit random number |
-| `name` | String(200) | Medicine name (required) |
-| `description` | Text | Medicine description (optional) |
-| `created_at` | DateTime | Auto-generated timestamp |
-| `updated_at` | DateTime | Auto-updated timestamp |
+| `id` | Integer | Primary key (auto-increment) |
+| `name` | String(100) | Unique company name |
+| `code` | String(3) | Unique 3-digit code (e.g., "101") |
+| `description` | Text | Company description |
+| `created_at` | DateTime | Creation timestamp |
+| `updated_at` | DateTime | Last update timestamp |
 
-## 🎨 Compare with Django
+### Medicine Table
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | String(15) | Primary key, 11-digit ID with checksum |
+| `name` | String(200) | Medicine name |
+| `description` | Text | Medicine description |
+| `price` | Float | Price |
+| `stock` | Integer | Stock quantity |
+| `prescribed` | Boolean | Requires prescription? |
+| `company_id` | Integer | Foreign key to Company |
+| `created_at` | DateTime | Creation timestamp |
+| `updated_at` | DateTime | Last update timestamp |
 
-### Django (backend/)
-- Multiple files, folders, apps
-- Migrations system required
-- More configuration
-- Better for large projects
+## 🔐 Medicine ID Format
 
-### Flask (backend_flask/)
-- Single `app.py` file
-- No migrations needed
-- Minimal configuration
-- Perfect for simple APIs
+Each medicine ID is an 11-digit number composed of two checksum-validated segments:
 
-**Both work great!** Choose based on your needs:
-- **Simple CRUD API?** → Flask (this one!)
-- **Large app with admin panel?** → Django
+- **Segment A (4 digits)**: `[Company Code (3 digits)][Checksum (1 digit)]`
+- **Segment B (7 digits)**: `[Prescribed Flag (1)][Random (5)][Checksum (1)]`
+
+Example: `10151905730`
+- `1015` = Acme Pharma (101) + checksum (5)
+- `1905730` = Prescribed (1) + random + checksum (0)
+
+## 🔧 Technologies
+
+- **Flask 3.1.2** - Web framework
+- **Flask-SQLAlchemy 3.1.1** - ORM for database
+- **Flask-CORS 6.0.1** - Cross-origin resource sharing
+- **python-dotenv 1.0.0** - Environment variables
+- **SQLite** - Database
+
+## 🧪 Testing
+
+Run the test script to see the system in action:
+
+```bash
+python3 test_company_system.py
+```
+
+This demonstrates:
+- Listing seeded companies
+- Creating new companies
+- Creating medicines with different companies
+- Dynamic ID generation with company codes
 
 ---
 

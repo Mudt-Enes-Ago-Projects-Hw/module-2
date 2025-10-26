@@ -25,24 +25,27 @@ class MedicineController:
         if not data or 'name' not in data:
             return jsonify({'error': 'Name is required'}), 400
         
-        if 'company' not in data:
-            return jsonify({'error': 'Company is required'}), 400
+        if 'company_id' not in data:
+            return jsonify({'error': 'Company ID is required'}), 400
         
-        # Create medicine
-        medicine = Medicine(
-            name=data['name'],
-            description=data.get('description', ''),
-            price=data.get('price', 0.0),
-            stock=data.get('stock', 0),
-            prescribed=data.get('prescribed', False),
-            company=data['company']
-        )
-        
-        # Save to database
-        db.session.add(medicine)
-        db.session.commit()
-        
-        return jsonify(medicine.to_dict()), 201
+        try:
+            # Create medicine
+            medicine = Medicine(
+                name=data['name'],
+                description=data.get('description', ''),
+                price=data.get('price', 0.0),
+                stock=data.get('stock', 0),
+                prescribed=data.get('prescribed', False),
+                company_id=data['company_id']
+            )
+            
+            # Save to database
+            db.session.add(medicine)
+            db.session.commit()
+            
+            return jsonify(medicine.to_dict()), 201
+        except ValueError as e:
+            return jsonify({'error': str(e)}), 400
 
     @staticmethod
     def get_by_id(medicine_id):
