@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { medicineApi } from '@/utils/api';
+import { medicineApi, companyApi } from '@/utils/api';
 import { toast } from 'react-toastify';
 import NotFound from '@/components/NotFound';
 
@@ -11,9 +11,22 @@ interface Medicine {
   price: number;
   stock: number;
   prescribed: boolean;
-  company: string;
+  company_id: number;
+  company: {
+    id: number;
+    name: string;
+    code: string;
+    description: string;
+  };
   created_at: string;
   updated_at: string;
+}
+
+interface Company {
+  id: number;
+  name: string;
+  code: string;
+  description: string;
 }
 
 export default function SearchMedicine() {
@@ -21,6 +34,7 @@ export default function SearchMedicine() {
   const { id } = router.query;
   
   const [medicine, setMedicine] = useState<Medicine | null>(null);
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [error, setError] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,14 +43,24 @@ export default function SearchMedicine() {
     price: 0,
     stock: 0,
     prescribed: false,
-    company: '',
+    company_id: 0,
   });
 
   useEffect(() => {
     if (id) {
       fetchMedicine();
+      fetchCompanies();
     }
   }, [id]);
+
+  const fetchCompanies = async () => {
+    try {
+      const response = await companyApi.getAll();
+      setCompanies(response.data);
+    } catch (err) {
+      console.error('Failed to fetch companies', err);
+    }
+  };
 
   const fetchMedicine = async () => {
     try {
@@ -52,7 +76,7 @@ export default function SearchMedicine() {
         price: response.data.price,
         stock: response.data.stock,
         prescribed: response.data.prescribed,
-        company: response.data.company,
+        company_id: response.data.company_id,
       });
     } catch (err: any) {
       const errorMessage = err.response?.data?.error || 'Medicine not found';
@@ -142,7 +166,7 @@ export default function SearchMedicine() {
                       price: medicine!.price,
                       stock: medicine!.stock,
                       prescribed: medicine!.prescribed,
-                      company: medicine!.company,
+                      company_id: medicine!.company_id,
                     });
                   }}
                   className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
@@ -246,7 +270,7 @@ export default function SearchMedicine() {
                 type="checkbox"
                 checked={formData.prescribed}
                 onChange={(e) => setFormData({ ...formData, prescribed: e.target.checked })}
-                disabled={!isEditing}
+                disabled
                 className="w-4 h-4"
               />
               <span className="text-sm font-medium text-gray-700">
@@ -262,14 +286,13 @@ export default function SearchMedicine() {
             </label>
             <input
               type="text"
-              value={formData.company}
-              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border border-gray-300 rounded-lg ${
-                isEditing ? 'bg-white' : 'bg-gray-100 text-gray-600'
-              }`}
-              placeholder="Enter company name"
+              value={medicine?.company.name || ''}
+              disabled
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600"
             />
+            <p className="mt-1 text-sm text-gray-500">
+              Company Code: {medicine?.company.code}
+            </p>
           </div>
 
           {/* Timestamps */}

@@ -2,7 +2,7 @@
 Company Routes
 """
 from flask import Blueprint
-from src.controllers.company_controller import CompanyController
+from .company_controller import CompanyController
 
 # Create blueprint
 company_bp = Blueprint('company', __name__, url_prefix='/api/companies')

@@ -41,9 +41,10 @@ def verify_id(identifier: str) -> bool:
 
     # --- Validate company segment ---
     company_code = segment_a[:3]
-    if company_code not in Preset.COMPANY_CODE_LOOKUP:
-        return False  # unknown company code
-
+    # Accept any 3-digit company code (now that codes are dynamic in database)
+    if not company_code.isdigit():
+        return False  # company code must be digits
+    
     company_digits = [int(c) for c in segment_a[:-1]]
     company_checksum = int(segment_a[-1])
     if ChecksumIdGenerator.compute_checksum(company_digits) != company_checksum:

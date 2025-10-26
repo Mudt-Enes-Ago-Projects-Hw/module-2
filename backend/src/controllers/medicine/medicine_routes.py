@@ -2,7 +2,7 @@
 Medicine Routes - URL endpoints
 """
 from flask import Blueprint
-from src.controllers.medicine_controller import MedicineController
+from .medicine_controller import MedicineController
 
 # Create blueprint
 medicine_bp = Blueprint('medicines', __name__, url_prefix='/api/medicines')

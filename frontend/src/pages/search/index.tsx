@@ -4,7 +4,7 @@ import { Html5Qrcode } from 'html5-qrcode';
 
 export default function SearchPage() {
   const [searchId, setSearchId] = useState('');
-  const [isScanning, setIsScanning] = useState(true);
+  const [isScanning, setIsScanning] = useState(false);
   const router = useRouter();
 
   const handleSearch = (id?: string) => {

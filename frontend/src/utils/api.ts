@@ -24,7 +24,7 @@ export const medicineApi = {
     price: number;
     stock: number;
     prescribed: boolean;
-    company: string;
+    company_id: number;
   }) => api.post('/medicines', data),
 
   // Update medicine
@@ -34,7 +34,7 @@ export const medicineApi = {
     price: number;
     stock: number;
     prescribed: boolean;
-    company: string;
+    company_id: number;
   }>) => api.put(`/medicines/${id}`, data),
 
   // Delete medicine
@@ -42,6 +42,32 @@ export const medicineApi = {
 
   // Search medicines
   search: (query: string) => api.get(`/medicines/search?q=${query}`),
+};
+
+// Company API calls
+export const companyApi = {
+  // Get all companies
+  getAll: () => api.get('/companies'),
+
+  // Get company by ID
+  getById: (id: number) => api.get(`/companies/${id}`),
+
+  // Create new company
+  create: (data: {
+    name: string;
+    code: string;
+    description: string;
+  }) => api.post('/companies', data),
+
+  // Update company
+  update: (id: number, data: Partial<{
+    name: string;
+    code: string;
+    description: string;
+  }>) => api.put(`/companies/${id}`, data),
+
+  // Delete company
+  delete: (id: number) => api.delete(`/companies/${id}`),
 };
 
 export default api;

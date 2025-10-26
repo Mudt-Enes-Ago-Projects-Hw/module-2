@@ -6,8 +6,8 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from src.config.settings import config
 from src.config.database import db
-from src.controllers.medicine_routes import medicine_bp
-from src.controllers.company_routes import company_bp
+from src.controllers.medicine import medicine_bp
+from src.controllers.company import company_bp
 
 
 def create_app():

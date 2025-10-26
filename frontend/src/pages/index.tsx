@@ -9,7 +9,15 @@ interface Medicine {
   price: number;
   stock: number;
   prescribed: boolean;
-  company: string;
+  company_id: number;
+  company: {
+    id: number;
+    name: string;
+    code: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+  };
   created_at: string;
   updated_at: string;
 }
@@ -87,7 +95,7 @@ export default function Home() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Company:</span>
-                  <span className="text-gray-800 capitalize">{medicine.company}</span>
+                  <span className="text-gray-800 capitalize">{medicine.company.name}</span>
                 </div>
               </div>
             </div>

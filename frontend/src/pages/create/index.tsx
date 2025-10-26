@@ -1,19 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { medicineApi } from '@/utils/api';
+import { medicineApi, companyApi } from '@/utils/api';
 import { toast } from 'react-toastify';
+
+interface Company {
+  id: number;
+  name: string;
+  code: string;
+  description: string;
+}
 
 export default function CreateMedicine() {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [companies, setCompanies] = useState<Company[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: 0,
     stock: 0,
     prescribed: false,
-    company: '',
+    company_id: 0,
   });
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  const fetchCompanies = async () => {
+    try {
+      const response = await companyApi.getAll();
+      setCompanies(response.data);
+      if (response.data.length > 0) {
+        setFormData(prev => ({ ...prev, company_id: response.data[0].id }));
+      }
+    } catch (err) {
+      console.error('Failed to fetch companies', err);
+      toast.error('Failed to load companies');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,30 +146,28 @@ export default function CreateMedicine() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Company *
             </label>
-            <input
-              type="text"
-              value={formData.company}
-              onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+            <select
+              value={formData.company_id}
+              onChange={(e) => setFormData({ ...formData, company_id: parseInt(e.target.value) })}
               required
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter company name"
-            />
+            >
+              <option value={0} disabled>Select a company</option>
+              {companies.map((company) => (
+                <option key={company.id} value={company.id}>
+                  {company.name} ({company.code})
+                </option>
+              ))}
+            </select>
           </div>
 
-          {/* Submit Buttons */}
-          <div className="flex gap-4 pt-6">
+          {/* Submit Button */}
+          <div className="pt-6">
             <button
               type="submit"
-              className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium cursor-pointer"
+              className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium cursor-pointer"
             >
               Create Medicine
-            </button>
-            <button
-              type="button"
-              onClick={() => router.push('/')}
-              className="flex-1 px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium cursor-pointer"
-            >
-              Cancel
             </button>
           </div>
         </form>
